@@ -1,23 +1,28 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('checkout') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'vysaghkrishnan', url: 'https://github.com/vysaghkrishnan/lab_sampleinstance.git']]])
-        }
+  agent { label 'linux'}
+  options {
+    skipDefaultCheckout(true)
+  }
+  stages{
+    stage('clean workspace') {
+      steps {
+        cleanWs()
+      }
     }
-        stage("Terraform init") {
-            steps {
-                sh ("terraform init");
-            }
-        }
-        stage("Terraform Action") {
-            steps {
-                echo "terraform action from parameter is --> ${action}"
-                sh ("terraform ${action} --auto-approve");
-        
+    stage('checkout') {
+      steps {
+        checkout scm
+      }
+    }
+    stage('terraform') {
+      steps {
+        sh './terraformw apply -auto-approve -no-color'
+      }
     }
   }
+  post {
+    always {
+      cleanWs()
     }
+  }
 }
