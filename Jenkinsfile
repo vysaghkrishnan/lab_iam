@@ -1,28 +1,22 @@
 pipeline {
-  agent { label 'linux'}
-  options {
-    skipDefaultCheckout(true)
-  }
-  stages{
-    stage('clean workspace') {
-      steps {
-        cleanWs()
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                git branch: 'main', credentialsId: 'GITHUB', url: 'git@github.com:vysaghkrishnan/lab_sampleinstance.git'
+                echo 'Hello World'
+                
+       sh 'terraform init'
+        sh 'terraform validate'
+        sh 'terraform plan'
+        sh 'terraform apply --var-file=dev.tfvars'
       }
     }
-    stage('checkout') {
-      steps {
-        checkout scm
-      }
-    }
-    stage('terraform') {
-      steps {
-        sh './terraformw apply -auto-approve -no-color'
-      }
-    }
-  }
-  post {
-    always {
-      cleanWs()
-    }
-  }
-}
+    
+                       
+                }
+            }
+        
+    
+
