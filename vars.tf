@@ -1,6 +1,6 @@
 variable "AWS_REGION" {
   type    = string
-  fault = "eu-west-2"
+  default = "eu-west-2"
 }
 
 variable "AWS_PROFILE" {
