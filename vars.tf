@@ -1,11 +1,11 @@
-variable "AWS_REGION" {
-  type    = string
-  default = "eu-west-2"
+#variable "AWS_REGION" {
+  #type    = string
+  #fault = "eu-west-2"
 }
 
-variable "AWS_PROFILE" {
-  type    = string
-  default = "default"
+#variable "AWS_PROFILE" {
+ #type    = string
+  #default = "default"
 }
 
 variable "AMIS" {
