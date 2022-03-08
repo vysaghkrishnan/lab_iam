@@ -10,40 +10,25 @@ pipeline {
    
 
     stages {
-        stage('Plan') {
-            steps {
-                script {
-                    currentBuild.displayName = params.version
-                }
-                sh 'terraform init -input=false'
-                
-                sh "terraform plan -input=false -out tfplan -var 'version=${params.version}'.tfvars"
-                sh 'terraform show -no-color tfplan > tfplan.txt'
-            }
-        }
-
-        stage('Approval') {
-            when {
-                not {
-                    equals expected: true, actual: params.autoApprove
-                }
-            }
-
-            steps {
-                script {
-                    def plan = readFile 'tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                }
-            }
-        }
-
-        stage('Apply') {
-            steps {
-                sh "terraform apply -input=false tfplan"
-            }
-        }
+    stage('Terraform Init') {
+      steps {
+        sh "${env.TERRAFORM_HOME}/terraform init -input=false"
+      }
     }
-}
+    stage('Terraform Plan') {
+      steps {
+        sh "${env.TERRAFORM_HOME}/terraform plan -out=tfplan -input=false -var-file='dev.tfvars'"
+      }
+    }
+    stage('Terraform Apply') {
+      steps {
+        input 'Apply Plan'
+        sh "${env.TERRAFORM_HOME}/terraform apply -input=false tfplan"
+      }
+    }
+            }
+        }
+    
+
 
    
