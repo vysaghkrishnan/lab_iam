@@ -17,7 +17,7 @@ pipeline {
                 }
                 sh 'terraform init -input=false'
                 
-                sh "terraform plan -input=false -out tfplan -var 'version=${params.version}.tfvars"
+                sh "terraform plan -input=false -out tfplan -var 'version=${params.version}'.tfvars"
                 sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
