@@ -8,7 +8,10 @@ pipeline {
     }
     
    
-
+    environment {
+	TF_WORKSPACE = 'development' //Sets the Terraform Workspace
+    	TF_IN_AUTOMATION = 'true'
+	}
     stages {
         stage('Plan') {
             steps {
