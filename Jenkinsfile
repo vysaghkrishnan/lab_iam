@@ -21,7 +21,7 @@ pipeline {
                 sh 'terraform init -input=false'
               
                 sh "terraform plan -input=false"
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+                
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
 
             steps {
                 script {
-                    def plan = readFile 'tfplan.txt'
+                   
                     input message: "Do you want to apply the plan?",
                         parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
