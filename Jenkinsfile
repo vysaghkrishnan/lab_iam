@@ -29,7 +29,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "terraform apply -input=false"
+                sh "terraform apply -auto-approve -no-color"
             }
         }
     }
